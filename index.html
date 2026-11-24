@@ -1,0 +1,679 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#09121f">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>مركز الفتح</title>
+<link rel="manifest" href="manifest.json">
+<link id="ico" rel="icon" href="data:,">
+<link id="ato" rel="apple-touch-icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800&family=Tajawal:wght@400;500;700&display=swap">
+<style>
+:root{
+  --bg:#09121f; --bg2:#0e1b2e; --card:#14223a; --card2:#1a2c49; --line:#243652;
+  --fg:#f4ede2; --muted:#93a1b8; --accent:#d8914a; --accent2:#b8671f; --accent-fg:#1f1205;
+  --good:#58d6a8; --good-bg:#11372f; --warn:#f2b45e; --warn-bg:#3b2b12; --info:#7cb2ff; --info-bg:#15294a; --bad:#ff8d7e;
+  --font-display:'Cairo',system-ui,'Segoe UI',Tahoma,sans-serif;
+  --font-body:'Tajawal',system-ui,'Segoe UI',Tahoma,sans-serif;
+  color-scheme:dark;
+}
+@media (prefers-color-scheme:light){
+  :root:not([data-theme="dark"]){
+    --bg:#eef2f7; --bg2:#ffffff; --card:#ffffff; --card2:#f1f5fa; --line:#d6dfea;
+    --fg:#0f1b2d; --muted:#5a6b83; --accent:#b4621a; --accent2:#8f4a0f; --accent-fg:#ffffff;
+    --good:#0f7a57; --good-bg:#dcf4ea; --warn:#9a5b06; --warn-bg:#fdecc8; --info:#1e5fb8; --info-bg:#dde9fb; --bad:#b4261a;
+    color-scheme:light;
+  }
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:16px;line-height:1.6;direction:rtl;
+  padding-top:max(20px,env(safe-area-inset-top,0px));padding-bottom:calc(104px + env(safe-area-inset-bottom,0px));
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+body.in-thread{padding-bottom:calc(170px + env(safe-area-inset-bottom,0px))}
+body.no-nav{padding-bottom:calc(30px + env(safe-area-inset-bottom,0px))}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+h1,h2,h3{font-family:var(--font-display);margin:0;text-wrap:balance}
+h1{font-size:2rem;font-weight:800;line-height:1.3}
+h2{font-size:1.1rem;font-weight:700}
+h3{font-size:1.25rem;font-weight:800}
+p{margin:0}
+.wrap{max-width:560px;margin-inline:auto;min-width:0}
+svg.i{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;flex:none}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.sub{color:var(--muted);font-size:.98rem}
+.top{display:flex;flex-direction:column;gap:6px;margin-bottom:18px}
+.note{max-width:560px;margin:0 auto 12px;padding:10px 14px;border-radius:14px;background:var(--warn-bg);color:var(--warn);font-size:.92rem}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:50px;padding:0 22px;border-radius:999px;font-weight:700;font-size:1.02rem;transition:transform .12s}
+.btn:active{transform:scale(.98)}
+.btn[disabled]{opacity:.55}
+.btn.primary{background:linear-gradient(180deg,var(--accent),var(--accent2));color:var(--accent-fg);box-shadow:0 10px 24px -12px var(--accent)}
+.btn.good{background:var(--good-bg);color:var(--good);border:1px solid var(--good)}
+.btn.ghost{background:var(--card);color:var(--fg);border:1px solid var(--line)}
+.btn.danger{background:transparent;color:var(--bad);border:1px solid var(--bad)}
+.btn.block{width:100%}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.add{margin-bottom:14px}
+.search{position:relative;display:block;margin-bottom:16px}
+.search input{width:100%;min-height:52px;padding:0 48px 0 16px;border-radius:16px;background:var(--bg2);border:1px solid var(--line);font-size:1rem}
+.search svg{position:absolute;inset-inline-end:16px;top:15px;color:var(--muted)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:22px}
+.list{display:flex;flex-direction:column;gap:12px}
+.cust{display:flex;align-items:center;gap:14px;padding:14px;cursor:pointer;min-width:0}
+.av{width:54px;height:54px;border-radius:16px;background:var(--card2);display:grid;place-items:center;font-family:var(--font-display);font-weight:800;font-size:1.4rem;flex:none;position:relative}
+.av .dot{position:absolute;top:-4px;inset-inline-start:-4px}
+.cinfo{flex:1;min-width:0;display:flex;flex-direction:column}
+.cinfo b{font-family:var(--font-display);font-size:1.1rem;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cinfo .sub.cut{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ph{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:.95rem;direction:ltr;justify-content:flex-end;font-variant-numeric:tabular-nums}
+.ph svg{width:16px;height:16px}
+.side{display:flex;flex-direction:column;align-items:center;gap:6px;flex:none}
+.pill{display:inline-block;padding:4px 14px;border-radius:999px;font-size:.88rem;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.pill.good{background:var(--good-bg);color:var(--good)}
+.pill.warn{background:var(--warn-bg);color:var(--warn)}
+.pill.info{background:var(--info-bg);color:var(--info)}
+.kebab{width:40px;height:34px;border-radius:12px;display:grid;place-items:center;border:1px solid var(--line);color:var(--muted)}
+.kebab svg{width:18px;height:18px}
+.empty{padding:34px 20px;text-align:center;display:flex;flex-direction:column;gap:12px;align-items:center;color:var(--muted)}
+.empty b{color:var(--fg);font-family:var(--font-display);font-size:1.1rem}
+.bar{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.icon-btn{width:46px;height:46px;border-radius:14px;background:var(--card);border:1px solid var(--line);display:grid;place-items:center;flex:none}
+.bar .ttl{min-width:0;display:flex;flex-direction:column;flex:1}
+.bar .ttl h1{font-size:1.45rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bal{padding:20px;display:flex;flex-direction:column;gap:4px;margin-bottom:14px;align-items:flex-start}
+.bal small{color:var(--muted)}
+.bal strong{font-family:var(--font-display);font-size:2.4rem;font-weight:800;line-height:1.2;font-variant-numeric:tabular-nums}
+.bal strong.warn{color:var(--warn)} .bal strong.good{color:var(--good)} .bal strong.info{color:var(--info)}
+.phone-line{display:flex;align-items:center;gap:8px;margin-top:6px;color:var(--muted);direction:ltr;font-variant-numeric:tabular-nums;user-select:all}
+.stack{display:flex;flex-direction:column;gap:12px}
+.ledger{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:10px}
+.ledger li{display:grid;grid-template-columns:auto 1fr auto auto;gap:12px;align-items:center;padding:12px 14px;background:var(--card);border:1px solid var(--line);border-radius:18px;min-width:0}
+.ledger.ro li{grid-template-columns:auto 1fr auto}
+.ledger .kind{font-size:.82rem;font-weight:800;padding:3px 10px;border-radius:999px}
+.ledger .kind.debt{background:var(--warn-bg);color:var(--warn)}
+.ledger .kind.pay{background:var(--good-bg);color:var(--good)}
+.ledger .what{min-width:0;display:flex;flex-direction:column}
+.ledger .what span{overflow-wrap:anywhere}
+.ledger .what small{color:var(--muted)}
+.ledger .amt{text-align:end;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap}
+.ledger .amt small{display:block;font-weight:500;color:var(--muted);font-size:.8rem}
+.ledger .rm{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;color:var(--muted)}
+.steps{padding:18px 20px;display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+.steps ol{margin:0;padding-inline-start:22px;display:flex;flex-direction:column;gap:8px}
+.kv{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+.kv:last-child{border-bottom:0}
+.kv span{color:var(--muted)}
+.box{padding:18px 20px;margin-bottom:14px;display:flex;flex-direction:column;gap:10px}
+.foot{display:flex;align-items:center;justify-content:center;gap:8px;color:var(--muted);margin-top:20px;font-size:.92rem;text-align:center}
+nav.tabs{position:fixed;inset-inline:0;bottom:0;z-index:20;background:var(--bg2);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
+nav.tabs .in{max-width:560px;margin:0 auto;display:grid}
+nav.tabs button{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 4px 12px;color:var(--muted);font-size:.88rem;font-weight:500}
+nav.tabs button[aria-current="page"]{color:var(--accent);font-weight:700}
+nav.tabs .dot{position:absolute;top:4px;inset-inline-start:calc(50% + 6px)}
+body.in-thread nav.tabs,body.no-nav nav.tabs{display:none}
+.dot{min-width:18px;height:18px;border-radius:9px;background:var(--bad);color:#fff;font-size:.72rem;font-weight:700;display:grid;place-items:center;padding:0 5px}
+.thread{display:flex;flex-direction:column;gap:10px;padding-block:4px;min-height:40vh}
+.bub{max-width:82%;padding:10px 14px;border-radius:18px 18px 6px 18px;background:var(--card2);align-self:flex-end;overflow-wrap:anywhere;white-space:pre-wrap}
+.bub.mine{align-self:flex-start;background:var(--accent);color:var(--accent-fg);border-radius:18px 18px 18px 6px}
+.bub small{display:block;opacity:.75;font-size:.78rem;margin-top:2px;white-space:normal}
+.compose{position:fixed;inset-inline:0;bottom:0;z-index:20;background:var(--bg2);border-top:1px solid var(--line);padding-top:10px;padding-bottom:calc(10px + env(safe-area-inset-bottom,0px));padding-inline:max(16px,env(safe-area-inset-left,0px)) max(16px,env(safe-area-inset-right,0px))}
+.compose .in{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:8px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px}
+.chip{flex:none;padding:6px 14px;border-radius:999px;background:var(--card);border:1px solid var(--line);font-size:.88rem;white-space:nowrap}
+.chip[aria-pressed="true"]{background:var(--accent);color:var(--accent-fg);border-color:var(--accent);font-weight:700}
+.chips.wrapx{flex-wrap:wrap;margin-bottom:14px}
+.cbox{display:flex;gap:8px;align-items:flex-end}
+.cbox textarea{flex:1;min-width:0;min-height:48px;max-height:120px;padding:11px 14px;border-radius:16px;border:1px solid var(--line);background:var(--bg);resize:none}
+.send{width:50px;height:50px;border-radius:50%;background:linear-gradient(180deg,var(--accent),var(--accent2));color:var(--accent-fg);display:grid;place-items:center;flex:none}
+.scrim{position:fixed;inset:0;background:rgba(2,6,14,.6);z-index:40}
+.panel{position:fixed;inset-inline:0;bottom:0;z-index:41;max-width:560px;margin:0 auto;max-height:90vh;overflow:auto;background:var(--bg2);border:1px solid var(--line);border-bottom:0;border-radius:26px 26px 0 0;padding:22px 20px calc(22px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:14px}
+.panel form,.form{display:flex;flex-direction:column;gap:8px}
+label{font-weight:700;font-size:.95rem;margin-top:6px}
+.field{width:100%;min-height:50px;padding:0 14px;border-radius:14px;background:var(--bg);border:1px solid var(--line);font-size:1rem}
+textarea.field{padding:12px 14px;min-height:110px;resize:vertical}
+select.field{appearance:none;background-image:none}
+.field.ltr{direction:ltr;text-align:right}
+.check{display:flex;align-items:center;gap:10px;margin-top:6px;font-weight:500}
+.check input{width:22px;height:22px;accent-color:var(--accent)}
+.err{color:var(--bad);min-height:1.3em;font-size:.92rem}
+.menu{display:flex;flex-direction:column;gap:10px}
+.toast{position:fixed;inset-inline:16px;bottom:96px;z-index:60;margin:0 auto;max-width:420px;padding:12px 18px;border-radius:16px;background:var(--fg);color:var(--bg);font-weight:700;text-align:center}
+.req{padding:16px;display:flex;flex-direction:column;gap:8px}
+.req .hd{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.req .hd b{font-family:var(--font-display)}
+.req p{overflow-wrap:anywhere;white-space:pre-wrap}
+.req .meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;color:var(--muted);font-size:.88rem}
+.login{max-width:420px;margin:8vh auto 0;display:flex;flex-direction:column;gap:14px}
+.logo{width:84px;height:84px;border-radius:24px;margin:0 auto}
+.center{text-align:center}
+.link{color:var(--accent);text-decoration:underline;background:none;font-weight:700}
+[hidden]{display:none!important}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div id="note" class="note" hidden></div>
+<div class="wrap" id="main"></div>
+<nav class="tabs" id="tabs" aria-label="التنقل الرئيسي"><div class="in" id="tabsin"></div></nav>
+<div id="sheet" hidden></div>
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import {getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import {initializeFirestore,getFirestore,persistentLocalCache,persistentMultipleTabManager,collection,collectionGroup,doc,setDoc,addDoc,updateDoc,deleteDoc,getDocs,onSnapshot,query,orderBy,serverTimestamp,writeBatch} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+/* ====== إعدادات Firebase (تُعبّأ مرة واحدة) ====== */
+const firebaseConfig={
+  apiKey:"AIzaSyBDWQv-w-MQK4FpDUT8mp7eD9jeDxVTSl0",
+  authDomain:"alfath-motors.firebaseapp.com",
+  projectId:"alfath-motors",
+  storageBucket:"alfath-motors.firebasestorage.app",
+  messagingSenderId:"320710223930",
+  appId:"1:320710223930:web:00f36a86d9c02d4ed5ed03"
+};
+const DEFAULT_CENTER="مركز الفتح للف المحركات الكهربائية";
+
+/* ====== أدوات عامة ====== */
+const ICON='data:image/png;base64,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';
+document.getElementById('ico').href=ICON;document.getElementById('ato').href=ICON;
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const nf=new Intl.NumberFormat('en-US',{maximumFractionDigits:2});
+const fmt=n=>nf.format(n);
+const money=n=>fmt(n)+' ج.م';
+const dfmt=d=>new Date(d).toLocaleDateString('ar-EG-u-nu-latn',{day:'numeric',month:'long'});
+const tfmt=d=>new Date(d).toLocaleTimeString('ar-EG-u-nu-latn',{hour:'numeric',minute:'2-digit'});
+const sameDay=(a,b)=>new Date(a).toDateString()===new Date(b).toDateString();
+const todayStr=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+const tsn=v=>v&&v.toMillis?v.toMillis():(typeof v==='number'?v:0);
+const stamp=ts=>sameDay(ts,Date.now())?tfmt(ts):dfmt(ts);
+function newToken(){const a=new Uint8Array(24);crypto.getRandomValues(a);const al='abcdefghjkmnpqrstuvwxyz23456789';return Array.from(a,x=>al[x%al.length]).join('')}
+
+const P={
+ users:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+ chat:'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+ sliders:'<line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/>',
+ userplus:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/>',
+ search:'<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>',
+ phone:'<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/>',
+ back:'<polyline points="9 18 15 12 9 6"/>',
+ dots:'<circle cx="12" cy="5" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="12" cy="19" r="1.2"/>',
+ trash:'<polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>',
+ send:'<line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>',
+ edit:'<path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/>',
+ plus:'<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>',
+ check:'<polyline points="20 6 9 17 4 12"/>',
+ wrench:'<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>',
+ inbox:'<polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>',
+ copy:'<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>',
+ wallet:'<path d="M21 12V7a2 2 0 0 0-2-2H5a2 2 0 0 0 0 4h14a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7"/><path d="M16 14h.01"/>',
+ logout:'<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>',
+ link:'<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>',
+ download:'<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>'
+};
+const ic=n=>'<svg class="i" viewBox="0 0 24 24" aria-hidden="true">'+P[n]+'</svg>';
+
+const REQ_STATUS=['new','doing','ready','delivered'];
+const REQ_LABEL={new:'جديد',doing:'قيد التنفيذ',ready:'جاهز للاستلام',delivered:'تم التسليم'};
+const REQ_KINDS=['لف محرك','إصلاح محرك','صيانة وفحص','أخرى'];
+
+/* ====== الحالة ====== */
+const S={role:'owner',tid:null,user:undefined,view:'customers',cview:'acct',cid:null,chat:null,from:null,q:'',rf:'new',
+  customers:{},entries:{},reqs:{},msgs:[],center:DEFAULT_CENTER,loaded:false,me:null,myEntries:{},myReqs:{},installEv:null,mode:'',busy:false};
+
+(function(){
+  const h=new URLSearchParams(location.hash.slice(1));
+  const t=h.get('c');
+  let st=null;
+  try{if(t)localStorage.setItem('ct',t);st=localStorage.getItem('ct')}catch(e){}
+  if(h.has('owner')||(!t&&!st)){S.role='owner'}else{S.role='customer';S.tid=t||st}
+})();
+
+const configured=!/^PUT_/.test(firebaseConfig.apiKey)&&!/^PUT_/.test(firebaseConfig.appId);
+let app,auth,db;
+if(configured){
+  app=initializeApp(firebaseConfig);
+  auth=getAuth(app);
+  try{db=initializeFirestore(app,{localCache:persistentLocalCache({tabManager:persistentMultipleTabManager()}),ignoreUndefinedProperties:true})}catch(e){db=getFirestore(app)}
+}
+
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();S.installEv=e;S.mode='';render()});
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))}
+
+/* ====== مساعدات ====== */
+function toast(msg){const t=$('#toast');t.textContent=msg;t.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>{t.hidden=true},2800)}
+function setNote(msg){const n=$('#note');if(msg){n.textContent=msg;n.hidden=false}else n.hidden=true}
+function fail(e){
+  const c=e&&e.code||'';
+  if(c==='permission-denied')toast('لا توجد صلاحية. تأكد من نشر قواعد Firestore ومن تسجيل الدخول.');
+  else if(c==='unavailable'||c==='deadline-exceeded')toast('لا يوجد اتصال بالإنترنت حالياً.');
+  else toast('تعذر تنفيذ العملية، حاول مرة أخرى.');
+  console.error(e);
+}
+function onErr(e){console.error(e);setNote(e&&e.code==='permission-denied'?'لا توجد صلاحية لقراءة البيانات. تأكد من نشر قواعد Firestore.':'تعذر الاتصال بالبيانات، قد تكون الصفحة غير محدّثة.')}
+const waNum=p=>{let d=String(p).replace(/\D/g,'');if(d.indexOf('00')===0)d=d.slice(2);else if(d.charAt(0)==='0')d='20'+d.slice(1);return d};
+function openUrl(u){const a=document.createElement('a');a.href=u;a.target='_blank';a.rel='noopener noreferrer';document.body.appendChild(a);a.click();a.remove()}
+const custLink=id=>location.origin+location.pathname+'#c='+id;
+const entriesOf=cid=>Object.values(S.entries).filter(e=>e.cid===cid);
+const sortAsc=(a,b)=>(a.date||'').localeCompare(b.date||'')||(a.ts||0)-(b.ts||0);
+const bal=list=>list.reduce((s,e)=>s+(e.type==='debt'?e.amount:-e.amount),0);
+const balanceOf=cid=>bal(entriesOf(cid));
+function pill(b){
+  if(b>0)return '<span class="pill warn">مدين '+money(b)+'</span>';
+  if(b<0)return '<span class="pill info">دائن '+money(-b)+'</span>';
+  return '<span class="pill good">مسدد</span>';
+}
+function tpl(kind,c){
+  const b=balanceOf(c.id);
+  if(kind==='remind')return b>0?'مرحباً '+c.name+'، نذكّرك بأن المبلغ المستحق لدينا هو '+money(b)+'. شكراً لتعاملك معنا.':'مرحباً '+c.name+'، حسابك مسدد بالكامل. شكراً لك.';
+  if(kind==='ready')return 'مرحباً '+c.name+'، المحرك جاهز للاستلام.';
+  const rows=entriesOf(c.id).sort(sortAsc).slice(-8).map(e=>dfmt(e.date+'T12:00:00')+' - '+(e.type==='debt'?'مديونية':'سداد')+' '+money(e.amount)+(e.note?' ('+e.note+')':''));
+  return 'كشف حسابك:\n'+(rows.length?rows.join('\n'):'لا توجد حركات بعد')+'\nالرصيد الحالي: '+(b>0?'مدين '+money(b):b<0?'دائن '+money(-b):'مسدد');
+}
+
+/* ====== اشتراكات البيانات ====== */
+let U=[];let unMsgs=null;
+const stopAll=()=>{U.forEach(f=>f());U=[];if(unMsgs){unMsgs();unMsgs=null}};
+const mapDocs=snap=>{const o={};snap.docs.forEach(d=>{o[d.ref.path]=Object.assign({id:d.id,cid:d.ref.parent.parent?d.ref.parent.parent.id:null},d.data({serverTimestamps:'estimate'}))});return o};
+function startOwner(){
+  stopAll();S.loaded=false;
+  U.push(onSnapshot(collection(db,'customers'),s=>{const o={};s.docs.forEach(d=>{o[d.id]=Object.assign({id:d.id},d.data({serverTimestamps:'estimate'}))});S.customers=o;S.loaded=true;setNote('');render()},onErr));
+  U.push(onSnapshot(collectionGroup(db,'entries'),s=>{S.entries=mapDocs(s);render()},onErr));
+  U.push(onSnapshot(collectionGroup(db,'requests'),s=>{S.reqs=mapDocs(s);render()},onErr));
+  U.push(onSnapshot(doc(db,'config','main'),s=>{S.center=(s.exists()&&s.data().center)||DEFAULT_CENTER;document.title=S.center;render()},onErr));
+}
+function startCustomer(){
+  stopAll();S.loaded=false;
+  const id=S.tid;
+  U.push(onSnapshot(doc(db,'customers',id),s=>{S.me=s.exists()?Object.assign({id:s.id},s.data({serverTimestamps:'estimate'})):null;S.loaded=true;setNote('');render()},onErr));
+  U.push(onSnapshot(collection(db,'customers',id,'entries'),s=>{S.myEntries=mapDocs(s);render()},onErr));
+  U.push(onSnapshot(query(collection(db,'customers',id,'requests'),orderBy('ts','desc')),s=>{S.myReqs=mapDocs(s);render()},onErr));
+  U.push(onSnapshot(doc(db,'config','main'),s=>{S.center=(s.exists()&&s.data().center)||DEFAULT_CENTER;document.title=S.center;render()},onErr));
+}
+function watchMsgs(cid){
+  if(unMsgs){unMsgs();unMsgs=null}
+  S.msgs=[];
+  unMsgs=onSnapshot(query(collection(db,'customers',cid,'messages'),orderBy('ts')),s=>{S.msgs=s.docs.map(d=>Object.assign({id:d.id},d.data({serverTimestamps:'estimate'})));render()},onErr);
+}
+function syncWatch(){
+  const need=S.role==='owner'?(S.view==='chats'&&S.chat):(S.cview==='chat'&&S.tid&&S.me?S.tid:null);
+  if(need){if(!syncWatch.cur||syncWatch.cur!==need){syncWatch.cur=need;watchMsgs(need)}}
+  else if(syncWatch.cur){syncWatch.cur=null;if(unMsgs){unMsgs();unMsgs=null}S.msgs=[]}
+}
+function autoRead(){
+  try{
+    if(S.role==='owner'&&S.view==='chats'&&S.chat&&S.customers[S.chat]&&S.customers[S.chat].unreadOwner)updateDoc(doc(db,'customers',S.chat),{unreadOwner:false}).catch(()=>{});
+    if(S.role==='customer'&&S.cview==='chat'&&S.me&&S.me.unreadCustomer)updateDoc(doc(db,'customers',S.tid),{unreadCustomer:false}).catch(()=>{});
+  }catch(e){}
+}
+
+/* ====== الإرسال ====== */
+async function sendMsg(cid,from,text,kind){
+  const b=writeBatch(db);
+  const m={from:from,text:text,ts:serverTimestamp()};
+  if(kind)m.kind=kind;
+  b.set(doc(collection(db,'customers',cid,'messages')),m);
+  const upd={last:{text:text,from:from,ts:Date.now()}};
+  if(from==='owner'){upd.unreadCustomer=true;upd.unreadOwner=false}else{upd.unreadOwner=true}
+  b.update(doc(db,'customers',cid),upd);
+  await b.commit();
+}
+
+/* ====== الشاشات المشتركة ====== */
+function msgsHTML(mine){
+  if(!S.msgs.length)return '<div class="empty"><span>ابدأ المحادثة بكتابة رسالة.</span></div>';
+  return S.msgs.map(m=>'<div class="bub'+(m.from===mine?' mine':'')+'">'+esc(m.text)+'<small>'+dfmt(tsn(m.ts)||Date.now())+' · '+tfmt(tsn(m.ts)||Date.now())+'</small></div>').join('');
+}
+function composer(chips){
+  return '<div class="compose"><div class="in">'+(chips?'<div class="chips">'+chips+'</div>':'')
+   +'<div class="cbox"><textarea id="msgtxt" rows="2" placeholder="اكتب رسالة…" aria-label="نص الرسالة"></textarea><button class="send" data-act="send" aria-label="إرسال">'+ic('send')+'</button></div></div></div>';
+}
+function installBtn(){return S.installEv?'<button class="btn ghost block" data-act="install">'+ic('download')+'تثبيت التطبيق على هذا الجهاز</button>':''}
+
+/* ====== شاشات المالك ====== */
+function viewLogin(){
+  return '<div class="login"><img class="logo" src="'+ICON+'" alt=""><div class="center"><h1 style="font-size:1.6rem">'+esc(S.center)+'</h1><p class="sub">دخول صاحب المركز</p></div>'
+   +'<form id="f-login" class="form" novalidate><label for="le">البريد الإلكتروني</label><input id="le" class="field ltr" type="email" autocomplete="username" inputmode="email">'
+   +'<label for="lp">كلمة السر</label><input id="lp" class="field ltr" type="password" autocomplete="current-password">'
+   +'<p class="err" id="ce" role="alert"></p><button class="btn primary block" type="submit">دخول</button></form>'
+   +'<p class="sub center">هل أنت عميل؟ افتح الرابط الذي أرسله لك المركز.</p></div>';
+}
+function listHTML(){
+  const all=Object.values(S.customers);
+  if(!S.loaded)return '<div class="card empty"><span>جارٍ تحميل العملاء…</span></div>';
+  if(!all.length)return '<div class="card empty">'+ic('users')+'<b>لا يوجد عملاء بعد</b><span>أضف أول عميل باسمه ورقم موبايله، ثم أرسل له رابط الدخول.</span></div>';
+  const q=S.q.trim().toLowerCase(),qd=q.replace(/\D/g,'');
+  const rows=all.filter(c=>!q||c.name.toLowerCase().indexOf(q)>-1||(qd&&String(c.phone).replace(/\D/g,'').indexOf(qd)>-1)).sort((a,b)=>a.name.localeCompare(b.name,'ar'));
+  if(!rows.length)return '<div class="card empty"><span>لا توجد نتائج مطابقة لبحثك.</span></div>';
+  return '<div class="list">'+rows.map(c=>'<div class="card cust" data-act="open" data-id="'+esc(c.id)+'" role="button" tabindex="0">'
+    +'<div class="av">'+esc(c.name.charAt(0))+'</div>'
+    +'<div class="cinfo"><b>'+esc(c.name)+'</b><span class="ph">'+esc(c.phone)+ic('phone')+'</span></div>'
+    +'<div class="side">'+pill(balanceOf(c.id))+'<button class="kebab" data-act="menu" data-id="'+esc(c.id)+'" aria-label="خيارات '+esc(c.name)+'">'+ic('dots')+'</button></div></div>').join('')+'</div>';
+}
+function summaryText(){
+  const all=Object.values(S.customers);
+  const due=all.reduce((s,c)=>s+Math.max(balanceOf(c.id),0),0);
+  return all.length+' عميل · إجمالي المستحقات لدى العملاء '+money(due);
+}
+function viewCustomers(){
+  return '<div class="top"><h1>العملاء</h1><p class="sub" id="csummary">'+esc(summaryText())+'</p></div>'
+   +'<button class="btn primary add" data-act="addc">'+ic('userplus')+'إضافة عميل</button>'
+   +'<label class="search"><input id="q" type="search" placeholder="ابحث بالاسم أو رقم التليفون…" value="'+esc(S.q)+'" autocomplete="off">'+ic('search')+'</label>'
+   +'<div id="clist">'+listHTML()+'</div>';
+}
+function ledgerHTML(rows,ro){
+  const list=rows.slice().sort(sortAsc);let run=0;
+  list.forEach(e=>{run+=(e.type==='debt'?e.amount:-e.amount);e.run=run});
+  list.reverse();
+  if(!list.length)return '<div class="card empty" style="margin-top:12px"><b>لا توجد حركات بعد</b><span>ستظهر هنا المديونيات والسداد.</span></div>';
+  return '<ul class="ledger'+(ro?' ro':'')+'">'+list.map(e=>{const d=e.type==='debt';
+    return '<li><span class="kind '+(d?'debt':'pay')+'">'+(d?'مديونية':'سداد')+'</span><div class="what"><span>'+esc(e.note||(d?'بدون بيان':'دفعة'))+'</span><small>'+dfmt(e.date+'T12:00:00')+'</small></div>'
+     +'<div class="amt">'+(d?'+':'−')+fmt(e.amount)+'<small>الرصيد '+fmt(e.run)+'</small></div>'
+     +(ro?'':'<button class="rm" data-act="delentry" data-id="'+esc(e.id)+'" data-cid="'+esc(e.cid)+'" aria-label="حذف القيد">'+ic('trash')+'</button>')+'</li>'}).join('')+'</ul>';
+}
+function balCard(b,phone){
+  const cls=b>0?'warn':b<0?'info':'good';
+  return '<section class="card bal"><small>'+(b>0?'المبلغ المستحق':b<0?'رصيد دائن':'الرصيد')+'</small><strong class="'+cls+'">'+money(Math.abs(b))+'</strong>'+pill(b)+(phone?'<div class="phone-line">'+ic('phone')+esc(phone)+'</div>':'')+'</section>';
+}
+function viewAccount(c){
+  return '<div class="bar"><button class="icon-btn" data-act="back" aria-label="رجوع">'+ic('back')+'</button><div class="ttl"><h1>'+esc(c.name)+'</h1><span class="sub">حساب العميل</span></div></div>'
+   +balCard(balanceOf(c.id),c.phone)
+   +'<div class="stack"><div class="row2"><button class="btn primary" data-act="adddebt" data-id="'+esc(c.id)+'">'+ic('plus')+'مديونية</button><button class="btn good" data-act="addpay" data-id="'+esc(c.id)+'">'+ic('check')+'سداد</button></div>'
+   +'<div class="row2"><button class="btn ghost" data-act="chatc" data-id="'+esc(c.id)+'">'+ic('chat')+'محادثة</button><button class="btn ghost" data-act="linkc" data-id="'+esc(c.id)+'">'+ic('link')+'رابط العميل</button></div></div>'
+   +'<div style="height:20px"></div><h2>كشف الحساب</h2>'+ledgerHTML(entriesOf(c.id),false);
+}
+function viewChats(){
+  const rows=Object.values(S.customers).filter(c=>c.last&&c.last.text).sort((a,b)=>(b.last.ts||0)-(a.last.ts||0));
+  return '<div class="top"><h1>المحادثات</h1><p class="sub">رسائل العملاء وطلبات العمل</p></div>'
+   +(rows.length?'<div class="list">'+rows.map(c=>'<div class="card cust" data-act="chatc" data-id="'+esc(c.id)+'" role="button" tabindex="0"><div class="av">'+esc(c.name.charAt(0))+(c.unreadOwner?'<span class="dot">!</span>':'')+'</div>'
+     +'<div class="cinfo"><b>'+esc(c.name)+'</b><span class="sub cut">'+(c.last.from==='owner'?'أنت: ':'')+esc(String(c.last.text).replace(/\n/g,' '))+'</span></div>'
+     +'<span class="sub" style="flex:none;font-size:.85rem">'+stamp(c.last.ts)+'</span></div>').join('')+'</div>'
+    :'<div class="card empty">'+ic('chat')+'<b>لا توجد محادثات بعد</b><span>ستظهر هنا رسائل العملاء، ويمكنك بدء محادثة من حساب أي عميل.</span><button class="btn ghost" data-act="tab" data-tab="customers">الذهاب إلى العملاء</button></div>');
+}
+function viewThread(c){
+  const chips='<button class="chip" data-act="chip" data-k="remind">تذكير بالمستحقات</button><button class="chip" data-act="chip" data-k="statement">كشف الحساب</button><button class="chip" data-act="chip" data-k="ready">المحرك جاهز للاستلام</button>';
+  return '<div class="bar"><button class="icon-btn" data-act="back" aria-label="رجوع">'+ic('back')+'</button><div class="ttl"><h1>'+esc(c.name)+'</h1><span class="sub" style="direction:ltr;text-align:right">'+esc(c.phone)+'</span></div></div>'
+   +'<div class="thread" id="msgs">'+msgsHTML('owner')+'</div>'+composer(chips);
+}
+function reqCard(r,owner){
+  const c=owner?S.customers[r.cid]:null;
+  const nxt=REQ_STATUS[REQ_STATUS.indexOf(r.status)+1];
+  return '<div class="card req"><div class="hd"><b>'+esc(owner?(c?c.name:'عميل محذوف'):r.kind)+'</b><span class="pill '+(r.status==='new'?'warn':r.status==='delivered'?'good':'info')+'">'+REQ_LABEL[r.status]+'</span></div>'
+   +'<div class="meta">'+(owner?'<span>'+esc(r.kind)+'</span>':'')+(r.hp?'<span>'+esc(r.hp)+' حصان</span>':'')+(r.urgent?'<span class="pill warn">عاجل</span>':'')+'<span>'+dfmt(tsn(r.ts)||Date.now())+'</span></div>'
+   +'<p>'+esc(r.desc)+'</p>'
+   +(owner&&nxt?'<button class="btn '+(nxt==='delivered'?'good':'primary')+'" data-act="reqnext" data-cid="'+esc(r.cid)+'" data-id="'+esc(r.id)+'">نقل إلى: '+REQ_LABEL[nxt]+'</button>':'')
+   +(owner&&c?'<button class="link" style="align-self:flex-start" data-act="open" data-id="'+esc(r.cid)+'">فتح حساب العميل</button>':'')+'</div>';
+}
+function viewReqs(){
+  const all=Object.values(S.reqs);
+  const cnt=s=>all.filter(r=>r.status===s).length;
+  const rows=all.filter(r=>r.status===S.rf).sort((a,b)=>tsn(b.ts)-tsn(a.ts));
+  return '<div class="top"><h1>طلبات العمل</h1><p class="sub">الطلبات الواردة من العملاء</p></div>'
+   +'<div class="chips wrapx">'+REQ_STATUS.map(s=>'<button class="chip" data-act="rf" data-s="'+s+'" aria-pressed="'+(S.rf===s)+'">'+REQ_LABEL[s]+' ('+cnt(s)+')</button>').join('')+'</div>'
+   +(rows.length?'<div class="list">'+rows.map(r=>reqCard(r,true)).join('')+'</div>':'<div class="card empty">'+ic('inbox')+'<span>لا توجد طلبات في هذه الحالة.</span></div>');
+}
+function statsHTML(){
+  const all=Object.values(S.customers),es=Object.values(S.entries);
+  const debt=es.filter(e=>e.type==='debt').reduce((s,e)=>s+e.amount,0);
+  const paid=es.filter(e=>e.type==='pay').reduce((s,e)=>s+e.amount,0);
+  const due=all.reduce((s,c)=>s+Math.max(balanceOf(c.id),0),0);
+  return '<div class="kv"><span>عدد العملاء</span><b>'+all.length+'</b></div><div class="kv"><span>إجمالي المديونيات المسجلة</span><b>'+money(debt)+'</b></div><div class="kv"><span>إجمالي المسدد</span><b>'+money(paid)+'</b></div><div class="kv"><span>المستحق حالياً لدى العملاء</span><b>'+money(due)+'</b></div>';
+}
+function viewSettings(){
+  return '<div class="top"><h1>الإعدادات</h1><p class="sub">إدارة المركز والحسابات</p></div>'
+   +'<section class="card box"><h2>ملخص الحسابات</h2><div id="stats">'+statsHTML()+'</div></section>'
+   +'<section class="card box"><h2>اسم المركز</h2><p class="sub">يظهر للعملاء في صفحتهم.</p><form id="f-set" class="form"><input id="cname" class="field" value="'+esc(S.center)+'"><button class="btn primary" type="submit">حفظ الاسم</button></form></section>'
+   +'<section class="card steps"><h2>طريقة العمل</h2><ol><li>أضف العميل باسمه ورقم موبايله.</li><li>اضغط «رابط العميل» وأرسله له على واتساب.</li><li>العميل يفتح الرابط فيرى حسابه ويحادثك ويطلب عملاً جديداً.</li><li>سجّل المديونية والسداد من حساب العميل، وغيّر حالة الطلبات من تبويب الطلبات.</li></ol></section>'
+   +installBtn()+'<div style="height:12px"></div><button class="btn danger block" data-act="logout">'+ic('logout')+'تسجيل الخروج</button>'
+   +'<div class="foot">'+ic('wrench')+'<span>'+esc(S.center)+'</span></div>';
+}
+
+/* ====== شاشات العميل ====== */
+function viewCAcct(){
+  const me=S.me;const rows=Object.values(S.myEntries);const b=bal(rows);
+  const reqs=Object.values(S.myReqs).sort((a,c)=>tsn(c.ts)-tsn(a.ts));
+  return '<div class="top"><p class="sub">'+esc(S.center)+'</p><h1>أهلاً '+esc(me.name)+'</h1></div>'
+   +balCard(b,null)+installBtn()
+   +'<div style="height:18px"></div><h2>طلباتي</h2>'
+   +(reqs.length?'<div class="list" style="margin-top:12px">'+reqs.map(r=>reqCard(r,false)).join('')+'</div>':'<p class="sub" style="margin:8px 0 0">لا توجد طلبات بعد. يمكنك إرسال طلب عمل من تبويب «طلب عمل».</p>')
+   +'<div style="height:22px"></div><h2>كشف الحساب</h2>'+ledgerHTML(rows,true)
+   +'<div class="foot"><button class="link" data-act="cexit">الخروج من هذا الحساب</button></div>';
+}
+function viewCChat(){
+  return '<div class="top"><h1>المحادثة</h1><p class="sub">تحدث مباشرة مع '+esc(S.center)+'</p></div><div class="thread" id="msgs">'+msgsHTML('customer')+'</div>'+composer('');
+}
+function viewCReq(){
+  return '<div class="top"><h1>طلب عمل</h1><p class="sub">أرسل تفاصيل المحرك وسنتواصل معك.</p></div>'
+   +'<form id="f-req" class="form card box" novalidate>'
+   +'<label for="rk">نوع الطلب</label><select id="rk" class="field">'+REQ_KINDS.map(k=>'<option>'+k+'</option>').join('')+'</select>'
+   +'<label for="rh">قدرة المحرك بالحصان (اختياري)</label><input id="rh" class="field ltr" inputmode="decimal" placeholder="مثال: 3">'
+   +'<label for="rd">وصف العطل أو المطلوب</label><textarea id="rd" class="field" placeholder="اكتب ما يحدث مع المحرك…"></textarea>'
+   +'<label class="check"><input id="ru" type="checkbox">طلب عاجل</label>'
+   +'<p class="err" id="ce" role="alert"></p><button class="btn primary block" type="submit">إرسال الطلب</button></form>';
+}
+function viewCInvalid(){
+  return '<div class="login"><div class="card empty"><b>الرابط غير صالح</b><span>قد يكون الحساب حُذف أو الرابط غير مكتمل. اطلب من المركز إرسال الرابط من جديد.</span><button class="btn ghost" data-act="cexit">مسح الرابط المحفوظ</button></div></div>';
+}
+
+/* ====== العرض ====== */
+function modeNow(){
+  if(!configured)return 'setup';
+  if(S.role==='customer'){if(!S.loaded)return 'c:loading';if(!S.me)return 'c:invalid';return 'c:'+S.cview}
+  if(!S.user)return S.user===undefined?'loading':'login';
+  if(S.view==='customers')return S.cid?'account:'+S.cid:'customers';
+  if(S.view==='chats')return S.chat?'thread:'+S.chat:'chats';
+  return S.view;
+}
+function tabsRender(mode){
+  const nav=$('#tabs'),inn=$('#tabsin');
+  const noNav=['setup','loading','login','c:loading','c:invalid'].indexOf(mode)>-1;
+  document.body.classList.toggle('no-nav',noNav);
+  document.body.classList.toggle('in-thread',mode.indexOf('thread:')===0||mode==='c:chat');
+  nav.hidden=noNav;
+  if(noNav)return;
+  let items;
+  if(S.role==='owner'){
+    const unread=Object.values(S.customers).filter(c=>c.unreadOwner).length;
+    const nr=Object.values(S.reqs).filter(r=>r.status==='new').length;
+    items=[['customers','العملاء','users',0],['chats','المحادثات','chat',unread],['reqs','الطلبات','inbox',nr],['settings','الإعدادات','sliders',0]];
+  }else{
+    items=[['acct','حسابي','wallet',0],['chat','المحادثة','chat',S.me&&S.me.unreadCustomer?1:0],['req','طلب عمل','wrench',0]];
+  }
+  inn.style.gridTemplateColumns='repeat('+items.length+',1fr)';
+  const cur=S.role==='owner'?S.view:S.cview;
+  inn.innerHTML=items.map(i=>'<button data-act="tab" data-tab="'+i[0]+'"'+(cur===i[0]?' aria-current="page"':'')+'>'+ic(i[2])+(i[3]?'<span class="dot">'+i[3]+'</span>':'')+'<span>'+i[1]+'</span></button>').join('');
+}
+function scrollMsgs(){const g=$('#msgs');if(g&&g.lastElementChild)g.lastElementChild.scrollIntoView({block:'end'})}
+function render(){
+  if(S.role==='owner'){
+    if(S.cid&&!S.customers[S.cid]&&S.loaded)S.cid=null;
+    if(S.chat&&!S.customers[S.chat]&&S.loaded){S.chat=null}
+  }
+  syncWatch();
+  const mode=modeNow();
+  tabsRender(mode);
+  const m=$('#main');
+  if(mode===S.mode){
+    if(mode==='customers'){const l=$('#clist');if(l){l.innerHTML=listHTML();const s=$('#csummary');if(s)s.textContent=summaryText();return}}
+    if(mode.indexOf('thread:')===0||mode==='c:chat'){const g=$('#msgs');if(g){g.innerHTML=msgsHTML(S.role==='owner'?'owner':'customer');scrollMsgs();autoRead();return}}
+    if(mode==='settings'){const st=$('#stats');if(st){st.innerHTML=statsHTML();return}}
+    if(mode==='login'||mode==='c:req'||mode==='loading'||mode==='setup')return;
+  }
+  S.mode=mode;
+  let h='';
+  if(mode==='setup')h='<div class="login"><div class="card empty"><b>الإعداد غير مكتمل</b><span>أضف قيمتي apiKey وappId في ملف index.html ثم أعد رفعه.</span></div></div>';
+  else if(mode==='loading'||mode==='c:loading')h='<div class="login"><div class="card empty"><span>جارٍ التحميل…</span></div></div>';
+  else if(mode==='login')h=viewLogin();
+  else if(mode==='customers')h=viewCustomers();
+  else if(mode.indexOf('account:')===0)h=viewAccount(S.customers[S.cid]);
+  else if(mode==='chats')h=viewChats();
+  else if(mode.indexOf('thread:')===0)h=viewThread(S.customers[S.chat]);
+  else if(mode==='reqs')h=viewReqs();
+  else if(mode==='settings')h=viewSettings();
+  else if(mode==='c:acct')h=viewCAcct();
+  else if(mode==='c:chat')h=viewCChat();
+  else if(mode==='c:req')h=viewCReq();
+  else if(mode==='c:invalid')h=viewCInvalid();
+  m.innerHTML=h;
+  if(mode.indexOf('thread:')===0||mode==='c:chat'){scrollMsgs()}else window.scrollTo(0,0);
+  autoRead();
+}
+function goOwner(view,cid,chat){S.view=view;S.cid=cid||null;S.chat=chat||null;S.mode='';render()}
+function goC(v){S.cview=v;S.mode='';render()}
+
+/* ====== النوافذ السفلية ====== */
+function sheet(html){
+  const el=$('#sheet');
+  el.innerHTML='<div class="scrim" data-act="close"></div><div class="panel" role="dialog" aria-modal="true">'+html+'</div>';
+  el.hidden=false;
+  const f=el.querySelector('input,textarea');if(f&&f.type!=='hidden'&&!f.readOnly)f.focus();
+}
+function closeSheet(){const el=$('#sheet');el.hidden=true;el.innerHTML=''}
+function custSheet(id){
+  const c=id?S.customers[id]:null;
+  sheet('<h3>'+(c?'تعديل العميل':'إضافة عميل')+'</h3><form id="f-cust" data-id="'+esc(id||'')+'" novalidate>'
+   +'<label for="cn">اسم العميل</label><input id="cn" class="field" value="'+esc(c?c.name:'')+'" autocomplete="off">'
+   +'<label for="cp">رقم الموبايل</label><input id="cp" class="field ltr" inputmode="tel" value="'+esc(c?c.phone:'')+'" autocomplete="off" placeholder="010 12345678">'
+   +'<p class="err" id="ce" role="alert"></p><div class="row2"><button class="btn ghost" type="button" data-act="close">إلغاء</button><button class="btn primary" type="submit">حفظ</button></div></form>');
+}
+function entrySheet(cid,type){
+  const c=S.customers[cid],debt=type==='debt';
+  sheet('<h3>'+(debt?'إضافة مديونية':'تسجيل سداد')+' · '+esc(c.name)+'</h3><form id="f-entry" data-cid="'+esc(cid)+'" data-type="'+type+'" novalidate>'
+   +'<label for="ea">المبلغ (ج.م)</label><input id="ea" class="field ltr" inputmode="decimal" autocomplete="off" placeholder="0">'
+   +'<label for="en">'+(debt?'البيان (مثال: لف محرك 3 حصان)':'ملاحظة (اختياري)')+'</label><input id="en" class="field" autocomplete="off">'
+   +'<label for="ed">التاريخ</label><input id="ed" type="date" class="field ltr" value="'+todayStr()+'">'
+   +'<p class="err" id="ce" role="alert"></p><div class="row2"><button class="btn ghost" type="button" data-act="close">إلغاء</button><button class="btn '+(debt?'primary':'good')+'" type="submit">'+(debt?'إضافة':'تسجيل')+'</button></div></form>');
+}
+function confirmSheet(title,text,act,id,cid){
+  sheet('<h3>'+esc(title)+'</h3><p class="sub">'+esc(text)+'</p><div class="row2"><button class="btn ghost" data-act="close">إلغاء</button><button class="btn danger" data-act="'+act+'" data-id="'+esc(id)+'" data-cid="'+esc(cid||'')+'">حذف</button></div>');
+}
+function linkSheet(id){
+  const c=S.customers[id];if(!c)return;
+  const link=custLink(id);
+  sheet('<h3>رابط '+esc(c.name)+'</h3><p class="sub">أرسل هذا الرابط للعميل. من خلاله يرى حسابه ويحادثك ويطلب عملاً. كل من يملك الرابط يدخل الحساب، فلا ترسله لغير صاحبه.</p>'
+   +'<input id="lk" class="field ltr" readonly value="'+esc(link)+'"><div class="row2"><button class="btn ghost" data-act="copylink">'+ic('copy')+'نسخ</button><button class="btn primary" data-act="walink" data-id="'+esc(id)+'">'+ic('send')+'واتساب</button></div>'
+   +'<button class="btn ghost block" data-act="close">إغلاق</button>');
+}
+
+/* ====== الأحداث ====== */
+document.addEventListener('click',async e=>{
+  const t=e.target.closest('[data-act]');if(!t)return;
+  const a=t.dataset.act,id=t.dataset.id,cid=t.dataset.cid;
+  try{
+  if(a==='tab'){S.from=null;if(S.role==='owner')goOwner(t.dataset.tab);else goC(t.dataset.tab);return}
+  if(a==='open'){goOwner('customers',id);return}
+  if(a==='back'){if(S.view==='chats'&&S.chat){if(S.from==='account')goOwner('customers',S.chat);else goOwner('chats')}else goOwner('customers');return}
+  if(a==='close'){closeSheet();return}
+  if(a==='addc'){custSheet();return}
+  if(a==='menu'){const c=S.customers[id];if(!c)return;
+    sheet('<h3>'+esc(c.name)+'</h3><div class="menu"><button class="btn ghost" data-act="linkc" data-id="'+esc(id)+'">'+ic('link')+'رابط العميل</button><button class="btn ghost" data-act="editc" data-id="'+esc(id)+'">'+ic('edit')+'تعديل البيانات</button><button class="btn danger" data-act="delc" data-id="'+esc(id)+'">'+ic('trash')+'حذف العميل</button></div>');return}
+  if(a==='editc'){custSheet(id);return}
+  if(a==='linkc'){linkSheet(id);return}
+  if(a==='copylink'){const i=$('#lk');i.select();let ok=false;try{await navigator.clipboard.writeText(i.value);ok=true}catch(er){try{ok=document.execCommand('copy')}catch(e2){}}toast(ok?'تم نسخ الرابط':'حدد الرابط وانسخه يدوياً');return}
+  if(a==='walink'){const c=S.customers[id];if(c)openUrl('https://wa.me/'+waNum(c.phone)+'?text='+encodeURIComponent('مرحباً '+c.name+'، من هذا الرابط تتابع حسابك مع '+S.center+' وتحادثنا وتطلب خدمة جديدة:\n'+custLink(id)));return}
+  if(a==='delc'){confirmSheet('حذف العميل','سيُحذف العميل وكل مديونياته وسداداته ومحادثاته وطلباته نهائياً، ويتوقف رابطه عن العمل.','delc2',id);return}
+  if(a==='delc2'){
+    t.disabled=true;
+    for(const sub of ['entries','messages','requests']){const s=await getDocs(collection(db,'customers',id,sub));for(const d of s.docs)await deleteDoc(d.ref)}
+    await deleteDoc(doc(db,'customers',id));
+    closeSheet();if(S.cid===id)goOwner('customers');toast('تم حذف العميل');return;
+  }
+  if(a==='adddebt'){entrySheet(id,'debt');return}
+  if(a==='addpay'){entrySheet(id,'pay');return}
+  if(a==='delentry'){confirmSheet('حذف القيد','هل تريد حذف هذه الحركة من كشف الحساب؟','delentry2',id,cid);return}
+  if(a==='delentry2'){await deleteDoc(doc(db,'customers',cid,'entries',id));closeSheet();toast('تم حذف القيد');return}
+  if(a==='chatc'){closeSheet();S.from=S.view==='customers'?'account':null;goOwner('chats',null,id);return}
+  if(a==='chip'){const c=S.customers[S.chat],ta=$('#msgtxt');if(c&&ta){ta.value=tpl(t.dataset.k,c);ta.focus()}return}
+  if(a==='send'){
+    const ta=$('#msgtxt');if(!ta)return;const text=ta.value.trim();if(!text){ta.focus();return}
+    if(S.busy)return;S.busy=true;
+    try{await sendMsg(S.role==='owner'?S.chat:S.tid,S.role==='owner'?'owner':'customer',text);ta.value=''}finally{S.busy=false}
+    return;
+  }
+  if(a==='rf'){S.rf=t.dataset.s;S.mode='';render();return}
+  if(a==='reqnext'){
+    const r=S.reqs['customers/'+cid+'/requests/'+id];if(!r)return;
+    const nxt=REQ_STATUS[REQ_STATUS.indexOf(r.status)+1];if(!nxt)return;
+    t.disabled=true;
+    await updateDoc(doc(db,'customers',cid,'requests',id),{status:nxt});
+    await sendMsg(cid,'owner','تحديث طلبك ('+r.kind+'): '+REQ_LABEL[nxt]);
+    toast('تم تحديث حالة الطلب');return;
+  }
+  if(a==='install'){if(S.installEv){S.installEv.prompt();S.installEv=null;S.mode='';render()}return}
+  if(a==='logout'){stopAll();await signOut(auth);S.mode='';return}
+  if(a==='cexit'){try{localStorage.removeItem('ct')}catch(er){}location.hash='';location.reload();return}
+  }catch(err){fail(err)}
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'&&!$('#sheet').hidden)closeSheet();
+  if((e.key==='Enter'||e.key===' ')&&e.target.matches&&e.target.matches('.cust[role="button"]')){e.preventDefault();e.target.click()}
+});
+document.addEventListener('input',e=>{if(e.target.id==='q'){S.q=e.target.value;const l=$('#clist');if(l)l.innerHTML=listHTML()}});
+document.addEventListener('submit',async e=>{
+  e.preventDefault();
+  const f=e.target,err=$('#ce');
+  try{
+  if(f.id==='f-login'){
+    const em=$('#le').value.trim(),pw=$('#lp').value;
+    if(!em||!pw){err.textContent='اكتب البريد وكلمة السر.';return}
+    err.textContent='';
+    try{await signInWithEmailAndPassword(auth,em,pw)}catch(ex){err.textContent=/network/.test(ex.code||'')?'لا يوجد اتصال بالإنترنت.':'بيانات الدخول غير صحيحة.'}
+    return;
+  }
+  if(f.id==='f-cust'){
+    const name=$('#cn').value.trim(),phone=$('#cp').value.trim(),digits=phone.replace(/\D/g,''),cur=f.dataset.id;
+    if(!name){err.textContent='اكتب اسم العميل.';return}
+    if(digits.length<8){err.textContent='اكتب رقم موبايل صحيح.';return}
+    if(Object.values(S.customers).some(c=>c.id!==cur&&String(c.phone).replace(/\D/g,'')===digits)){err.textContent='هذا الرقم مسجل لعميل آخر.';return}
+    if(cur){await updateDoc(doc(db,'customers',cur),{name:name,phone:phone});closeSheet();toast('تم تحديث بيانات العميل')}
+    else{const id=newToken();await setDoc(doc(db,'customers',id),{name:name,phone:phone,createdAt:Date.now(),last:null,unreadOwner:false,unreadCustomer:false});closeSheet();toast('تمت إضافة العميل');linkSheet(id)}
+    return;
+  }
+  if(f.id==='f-entry'){
+    const raw=$('#ea').value.replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(',','.');
+    const amt=parseFloat(raw);
+    if(!(amt>0)){err.textContent='اكتب مبلغاً أكبر من صفر.';return}
+    await addDoc(collection(db,'customers',f.dataset.cid,'entries'),{type:f.dataset.type,amount:Math.round(amt*100)/100,note:$('#en').value.trim(),date:$('#ed').value||todayStr(),ts:Date.now()});
+    closeSheet();toast(f.dataset.type==='debt'?'تمت إضافة المديونية':'تم تسجيل السداد');return;
+  }
+  if(f.id==='f-set'){await setDoc(doc(db,'config','main'),{center:$('#cname').value.trim()||DEFAULT_CENTER});toast('تم حفظ اسم المركز');return}
+  if(f.id==='f-req'){
+    const desc=$('#rd').value.trim();
+    if(!desc){err.textContent='اكتب وصف العطل أو المطلوب.';return}
+    if(S.busy)return;S.busy=true;err.textContent='';
+    const kind=$('#rk').value,hp=$('#rh').value.trim(),urgent=$('#ru').checked;
+    try{
+      const b=writeBatch(db);
+      b.set(doc(collection(db,'customers',S.tid,'requests')),{kind:kind,desc:desc,hp:hp,urgent:urgent,status:'new',ts:serverTimestamp()});
+      const text='طلب عمل جديد: '+kind+(hp?' ('+hp+' حصان)':'')+(urgent?' - عاجل':'')+'\n'+desc;
+      b.set(doc(collection(db,'customers',S.tid,'messages')),{from:'customer',text:text,ts:serverTimestamp(),kind:'request'});
+      b.update(doc(db,'customers',S.tid),{last:{text:text,from:'customer',ts:Date.now()},unreadOwner:true});
+      await b.commit();
+      toast('تم إرسال طلبك، سنتواصل معك قريباً');goC('acct');
+    }finally{S.busy=false}
+    return;
+  }
+  }catch(ex){fail(ex)}
+});
+
+/* ====== التشغيل ====== */
+if(!configured){render()}
+else if(S.role==='customer'){startCustomer();render()}
+else{
+  render();
+  onAuthStateChanged(auth,u=>{
+    S.user=u||null;S.mode='';
+    if(u)startOwner();else{stopAll();S.customers={};S.entries={};S.reqs={};S.loaded=false}
+    render();
+  });
+}
+</script>
+</body>
+</html>
